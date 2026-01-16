@@ -7,7 +7,6 @@ use eftec\bladeone\BladeOne;
 class Controller
 {
     protected static $blade;
-    public function __construct() {}
 
     public static function view(string $view, array $data = [])
     {
