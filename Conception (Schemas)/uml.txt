@@ -1,0 +1,93 @@
+@startuml
+
+Class User {
+  # id : int,
+  # first_name : string,
+  # last_name : string,
+  # email : string,
+}
+
+Class Admin extends User {
+  - role : string
+}
+
+Class Teacher extends User {
+  - role : string
+}
+Class Student extends User {
+  - role : string
+}
+
+Class ClassRoom {
+  - id : int,
+  - name : string,
+  - school_year : string,
+}
+
+Class Sprint {
+  - id : int,
+  - name : string,
+  - start_date : string,
+  - end_date : string,
+}
+
+Class Brief {
+  - id : int ,
+  - title : string,
+  - description : string,
+  - dateRemise : Date
+  - type : brief_type
+}
+
+enum brief_type {
+  Individual,
+  Collective
+}
+
+Class Competence {
+  - id : int ,
+  - code : string,
+  - description : string,
+  - libelle : string
+}
+
+Class Evaluation {
+  - id : int,
+  - level : evaluation_enum,
+  - comment : string,
+  - date : date,
+  - review : review_enum
+}
+enum evaluation_enum {
+  IMITER
+  S_ADAPTER
+  TRANSPOSER
+}
+enum review_enum {
+  Bad
+  Good
+  Excellent
+}
+
+Class Livrable {
+    - id: int
+    - url: string
+    - dateSubmitted: DateTime
+}
+
+
+ClassRoom "1" -- "0..*" Student : contains >
+ClassRoom "1" -- "0..*" Sprint : organized in >
+Sprint "1" -- "0..*" Brief : contains >
+
+Brief "0..*" -- "1..*" Competence : targets >
+
+Student "1" -- "0..*" Livrable : submits >
+Livrable "0..*" -- "1" Brief : for >
+
+Teacher "0..*" -- "1" Livrable : reviews >
+Student "1" -- "0..*" Evaluation : receives >
+Brief "1" -- "0..*" Evaluation : context >
+Competence "1" -- "0..*" Evaluation : measures >
+
+@enduml
