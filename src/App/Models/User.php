@@ -7,7 +7,7 @@ class User
     protected int $id;
     protected string $first_name;
     protected string $last_name;
-    protected int $email;
+    protected string $email;
     public function __construct($id, $first_name, $last_name, $email)
     {
         $this->id = $id;

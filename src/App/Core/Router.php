@@ -2,16 +2,18 @@
 
 namespace App\Core;
 
+use App\Core\Functions;
+
 class Router {
     private $routes = [];
 
     public function get($uri,$action){
-        $routes['GET'][$uri] = $action;
+        $this->routes['GET'][$uri] = $action;
         return;
     }
 
     public function post($uri,$action){
-        $routes['POST'][$uri] = $action;
+        $this->routes['POST'][$uri] = $action;
         return;
     }   
 
