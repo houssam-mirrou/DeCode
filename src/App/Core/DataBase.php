@@ -9,15 +9,16 @@ class DataBase {
     private static $instance;
     private function __construct()
     {
-        $config = Config::get_config();
+        $config = Config::get_config_database();
         $username = 'user';
         $password = 'password';
-        $dsn = "pgsql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
+        $dsn = "pgsql:host={$config['host']};port={$config['port']};dbname={$config['dbname']}";
         try {
             $this->connection = new PDO($dsn, $username, $password, [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ]);
+            $this->connection->exec("SET NAMES 'UTF8'");
         } catch (PDOException $e) {
             die("Database connection failed: " . $e->getMessage());
         }

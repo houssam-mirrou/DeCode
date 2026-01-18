@@ -11,8 +11,17 @@ class Config
                 'host' => 'db',
                 'port' => 5432,
                 'dbname' => 'brief_db',
-                'charset' => 'utf8mb4'
+                'charset' => 'utf8'
             ]
+        ];
+    }
+    public static function get_config_database()
+    {
+        return [
+            'host' => 'db',
+            'port' => 5432,
+            'dbname' => 'brief_db',
+            'charset' => 'utf8'
         ];
     }
 }
