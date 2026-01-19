@@ -24,7 +24,7 @@ class CompeteceRepository {
         $competences_db = $this->competence_dao->get_all_competence();
         $comp_arr=[];
         foreach($competences_db as $comp){
-            $competence = new Competence($comp['id'],$comp['code'],$comp['description'],$comp['libelle']);
+            $competence = ComeptenceMapper::map_competence($comp['id'],$comp['code'],$comp['description'],$comp['libelle']);
             array_push($comp_arr,$competence);
         }
         return $comp_arr;

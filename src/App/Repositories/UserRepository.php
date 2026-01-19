@@ -22,4 +22,25 @@ class UserRepository {
         $current_user = UserMapper::map_user($user);
         return $current_user;
     }
+    public function get_teachers(){
+        $db_teachers = $this->userDao->get_teachers();
+        $teachers = [];
+        foreach($db_teachers as $teach){
+            $teacher = UserMapper::map_teacher($teach);
+            array_push($teachers,$teacher);
+        }
+        return $teachers;
+    }
+    public function get_unassigned_teacher(){
+        $db_teachers = $this->userDao->get_unassigned_teacher();
+        $teachers = [];
+        foreach($db_teachers as $teach){
+            $teacher = UserMapper::map_teacher($teach);
+            array_push($teachers,$teacher);
+        }
+        return $teachers;
+    }
+    public function get_teacher_by_id($id){
+        return $this->userDao->get_teacher_by_id($id);
+    }
 }

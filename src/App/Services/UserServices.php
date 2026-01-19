@@ -20,4 +20,21 @@ class UserServices {
     public function get_user($email){
         return $this->user_repository->get_user($email);
     }
+
+    public function get_teachers(){
+        return $this->user_repository->get_teachers();
+    }
+
+    public function get_unassigned_teacher(){
+        return $this->user_repository->get_unassigned_teacher();
+    }
+
+    public function gat_assigned_teachers(){
+        return $this->user_repository->gat_assigned_teachers();
+    }
+
+    public function get_teacher_by_id($id){
+        return $this->user_repository->get_teacher_by_id($id);
+    }
+
 }

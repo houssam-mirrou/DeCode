@@ -56,44 +56,79 @@ class UserDao
         }
         return false;
     }
-    public function insert_student($first_name,$last_name,$email,$password,$role,$class_id) {
+    public function insert_student($first_name, $last_name, $email, $password, $role, $class_id)
+    {
         $query = 'INSERT into users (first_name,last_name,email,password,role,class_id) 
                   values (:first_name,:last_name,:email,:password,:role,:class_id)';
         $params = [
-            ':first_name'=>$first_name,
-            ':last_name'=>$last_name,
-            ':email'=>$email,
-            ':password'=>$password,
-            ':role'=>$role,
-            ':class_id'=>$class_id
+            ':first_name' => $first_name,
+            ':last_name' => $last_name,
+            ':email' => $email,
+            ':password' => $password,
+            ':role' => $role,
+            ':class_id' => $class_id
         ];
-        $result = $this->data->query($query,$params);
+        $result = $this->data->query($query, $params);
         return $result;
     }
-    public function insert_admin($first_name,$last_name,$email,$password,$role) {
+    public function insert_user($first_name, $last_name, $email, $password, $role)
+    {
         $query = 'INSERT into users (first_name,last_name,email,password,role) 
                   values (:first_name,:last_name,:email,:password,:role)';
         $params = [
-            ':first_name'=>$first_name,
-            ':last_name'=>$last_name,
-            ':email'=>$email,
-            ':password'=>$password,
-            ':role'=>$role,
+            ':first_name' => $first_name,
+            ':last_name' => $last_name,
+            ':email' => $email,
+            ':password' => $password,
+            ':role' => $role,
         ];
-        $result = $this->data->query($query,$params);
+        $result = $this->data->query($query, $params);
         return $result;
     }
-    public function insert_teacher($first_name,$last_name,$email,$password,$role) {
+    public function insert_teacher($first_name, $last_name, $email, $password, $role)
+    {
         $query = 'INSERT into users (first_name,last_name,email,password,role) 
                   values (:first_name,:last_name,:email,:password,:role)';
         $params = [
-            ':first_name'=>$first_name,
-            ':last_name'=>$last_name,
-            ':email'=>$email,
-            ':password'=>$password,
-            ':role'=>$role,
+            ':first_name' => $first_name,
+            ':last_name' => $last_name,
+            ':email' => $email,
+            ':password' => $password,
+            ':role' => $role,
         ];
-        $result = $this->data->query($query,$params);
+        $result = $this->data->query($query, $params);
+        return $result;
+    }
+
+    public function get_teachers()
+    {
+        $query = "SELECT * from users where role='teacher'";
+        $result = $this->data->query($query);
+        return $result;
+    }
+
+    public function get_unassigned_teacher()
+    {
+        $query = "SELECT u.* FROM users u
+                    LEFT JOIN teachers_in_class t ON u.id = t.teacher_id
+                    WHERE u.role = 'teacher' 
+                    AND t.teacher_id IS NULL;";
+        $result = $this->data->query($query);
+        return $result;
+    }
+    public function get_teacher_by_id($id)
+    {
+        $query = "SELECT * from users where id=:id";
+        $params = [
+            ':id' => $id
+        ];
+        $result = $this->data->query($query, $params);
+        return $result[0];
+    }
+    public function gat_assigned_teachers()
+    {
+        $query = "SELECT * from users u,teachers_in_class t where role='teacher' and u.id==t.teacher_id";
+        $result = $this->data->query($query);
         return $result;
     }
 }
