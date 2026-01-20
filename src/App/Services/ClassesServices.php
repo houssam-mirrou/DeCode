@@ -66,4 +66,10 @@ class ClassesServices
     {
         return $this->classes_repository->remove_teacher_from_class($class_id, $teacher_id);
     }
+
+    public function add_one_teacher_to_class($class_id, $teacher_id)
+    {
+        return $this->classes_repository->add_teacher_to_class($class_id,$teacher_id);   
+    }
+
 }

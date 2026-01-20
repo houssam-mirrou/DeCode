@@ -35,8 +35,6 @@ $router->post('/admin/competence/create','AdminCompetencesController@add_compete
 $router->post('/admin/competence/delete','AdminCompetencesController@delete_competence');
 $router->post('/admin/competence/update','AdminCompetencesController@update_competence');
 
-//admin-users
-$router->get('/admin/users','AdminUsersController@index');
 
 //admin-classes
 $router->get('/admin/classes','AdminClassesController@index');
@@ -45,4 +43,12 @@ $router->post('/admin/class/delete','AdminClassesController@delete_class');
 $router->post('/admin/class/update','AdminClassesController@update_class');
 $router->post('/admin/class/assign-teachers','AdminClassesController@assign_teacher');
 $router->post('/admin/class/remove-teacher','AdminClassesController@remove_teacher');
+
+//admin-users
+$router->get('/admin/users','AdminUsersController@index');
+$router->post('/admin/user/create','AdminUsersController@add_user');
+$router->post('/admin/user/update','AdminUsersController@update_user');
+$router->post('/admin/user/delete','AdminUsersController@delete_user');
+
+
 $router->dispatch();
