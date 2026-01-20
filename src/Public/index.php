@@ -50,5 +50,11 @@ $router->post('/admin/user/create','AdminUsersController@add_user');
 $router->post('/admin/user/update','AdminUsersController@update_user');
 $router->post('/admin/user/delete','AdminUsersController@delete_user');
 
+//admin-sprints
+$router->get('/admin/sprints','AdminSprintsController@index');
+$router->post('/admin/sprint/create','AdminSprintsController@insert_sprint');
+$router->post('/admin/sprint/delete','AdminSprintsController@delete_sprint');
+$router->post('/admin/sprint/update','AdminSprintsController@update_sprint');
+
 
 $router->dispatch();
