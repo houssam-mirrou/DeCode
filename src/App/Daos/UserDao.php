@@ -71,7 +71,7 @@ class UserDao
         $result = $this->data->query($query, $params);
         return $result;
     }
-    public function insert_user($first_name, $last_name, $email, $password, $role)
+    public function insert_admin($first_name, $last_name, $email, $password, $role)
     {
         $query = 'INSERT into users (first_name,last_name,email,password,role) 
                   values (:first_name,:last_name,:email,:password,:role)';
@@ -130,5 +130,53 @@ class UserDao
         $query = "SELECT * from users u,teachers_in_class t where role='teacher' and u.id==t.teacher_id";
         $result = $this->data->query($query);
         return $result;
+    }
+
+    public function get_users_without_current($id)
+    {
+        $query = "SELECT * FROM users
+                    where id!=:id";
+        $params = [
+            ':id' => $id
+        ];
+        $result = $this->data->query($query, $params);
+        return $result;
+    }
+
+    public function update_user_with_password($id, $first_name, $last_name, $email, $password, $role, $class_id)
+    {
+        $query = "UPDATE users SET first_name = :first_name, last_name = :last_name, email = :email, role = :role";
+
+        $params = [
+            ':id' => $id,
+            ':first_name' => $first_name,
+            ':last_name' => $last_name,
+            ':email' => $email,
+            ':role' => $role
+        ];
+
+        if (!empty($password)) {
+            $query .= ", password = :password";
+            $params[':password'] = $password;
+        }
+
+        if ($role === 'student') {
+            $query .= ", class_id = :class_id";
+            $params[':class_id'] = $class_id;
+        } else {
+            $query .= ", class_id = NULL";
+        }
+
+        $query .= " WHERE id = :id";
+
+        return $this->data->query($query, $params);
+    }
+
+    public function delete_user_by_id($id){
+        $query = 'DELETE from users where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        return $this->data->query($query,$params);
     }
 }

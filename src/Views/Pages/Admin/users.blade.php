@@ -15,7 +15,8 @@
 
                 <a href="/"
                     class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3  text-slate-400 group-hover:text-white transition-colors"></i>
+                    <i data-lucide="layout-dashboard"
+                        class="w-5 h-5 mr-3  text-slate-400 group-hover:text-white transition-colors"></i>
                     <span class="font-medium">Dashboard</span>
                 </a>
 
@@ -114,7 +115,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100">
-                            {{-- @forelse($users as $u)
+                            @forelse($users as $u)
                                 <tr class="hover:bg-slate-50 transition-colors group">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
@@ -153,6 +154,10 @@
                                             <span class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded">
                                                 Class #{{ $u->get_class_id() }}
                                             </span>
+                                        @elseif ($u->get_role() === 'teacher')
+                                            <span class="text-xs font-medium text-slate-600 bg-slate-100 px-2 py-1 rounded">
+                                                Class # to be implemented
+                                            </span>
                                         @else
                                             <span class="text-xs text-slate-400">-</span>
                                         @endif
@@ -166,7 +171,8 @@
                                             <button onclick="openEditModal(this)" data-id="{{ $u->get_id() }}"
                                                 data-fname="{{ $u->get_first_name() }}"
                                                 data-lname="{{ $u->get_last_name() }}" data-email="{{ $u->get_email() }}"
-                                                data-role="{{ $u->get_role() }}" data-class="{{ $u->get_class_id() }}"
+                                                data-role="{{ $u->get_role() }}"
+                                                data-class="{{ $u->get_role() == 'student' ? $u->get_class_id() : '' }}"
                                                 class="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
                                                 title="Edit User">
                                                 <i data-lucide="pencil" class="w-4 h-4"></i>
@@ -185,13 +191,13 @@
                                         No users found matching this criteria.
                                     </td>
                                 </tr>
-                            @endforelse --}}
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
 
                 <div class="flex items-center justify-between mt-6">
-                    {{-- <p class="text-sm text-slate-500">Showing <span class="font-medium">{{ count($users) }}</span> users --}}
+                    <p class="text-sm text-slate-500">Showing <span class="font-medium">{{ count($users) }}</span> users
                     </p>
                     <div class="flex gap-2">
                         <button
@@ -256,12 +262,12 @@
                                 <label class="block text-sm font-medium text-slate-700">Assign Class</label>
                                 <select name="class_id"
                                     class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white">
-                                    {{-- <option value="">-- Select Class --</option>
+                                    <option value="">-- Select Class --</option>
                                     @if (isset($classes))
                                         @foreach ($classes as $class)
-                                            <option value="{{ $class['id'] }}">{{ $class['name'] }}</option>
+                                            <option value="{{ $class->get_id() }}">{{ $class->get_name() }}</option>
                                         @endforeach
-                                    @endif --}}
+                                    @endif
                                 </select>
                             </div>
 
@@ -326,11 +332,11 @@
                                 <select name="class_id" id="edit_class_select"
                                     class="mt-1 block w-full rounded-md border border-slate-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm bg-white">
                                     <option value="">-- No Class --</option>
-                                    {{-- @if (isset($classes))
+                                    @if (isset($classes))
                                         @foreach ($classes as $class)
-                                            <option value="{{ $class['id'] }}">{{ $class['name'] }}</option>
+                                            <option value="{{ $class->get_id() }}">{{ $class->get_name() }}</option>
                                         @endforeach
-                                    @endif --}}
+                                    @endif
                                 </select>
                             </div>
 
