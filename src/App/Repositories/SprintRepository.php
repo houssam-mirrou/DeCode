@@ -2,16 +2,25 @@
 
 namespace App\Repositories;
 
+use App\Daos\BriefDao;
+use App\Daos\CompetenceDao;
 use App\Daos\SprintDao;
+use App\Mappers\BriefMapper;
+use App\Mappers\ComeptenceMapper;
 use App\Mappers\SprintMapper;
+use WeakMap;
 
 class SprintRepository
 {
     private $sprint_dao;
+    private $brief_dao;
+    private $competence_dao;
     private static $instance;
     private function __construct()
     {
+        $this->brief_dao = BriefDao::get_instance();
         $this->sprint_dao = SprintDao::get_instance();
+        $this->competence_dao = CompetenceDao::get_instance();
     }
 
     public static function get_instance()
@@ -37,12 +46,65 @@ class SprintRepository
         return $this->sprint_dao->delete_sprint($id);
     }
 
-    public function get_all_sprints(){
+    public function get_all_sprints()
+    {
         $db_sprints = $this->sprint_dao->get_all_sprints();
         $sprints = [];
-        foreach($db_sprints as $sprint){
-            array_push($sprints,SprintMapper::map_sprint($sprint));
+        foreach ($db_sprints as $sprint) {
+            array_push($sprints, SprintMapper::map_sprint($sprint));
         }
         return $sprints;
+    }
+
+    public function get_all_sprints_with_briefs_and_competences()
+    {
+        $rows = $this->sprint_dao->get_all_sprints_with_briefs_and_competences();
+
+        $result = [];
+
+        foreach ($rows as $row) {
+
+            $sprintId = $row['sprint_id'];
+
+            if (!isset($result[$sprintId])) {
+                $result[$sprintId] = [
+                    'sprint' => SprintMapper::map_sprint_info(
+                        $row['sprint_id'],
+                        $row['name'],
+                        $row['start_date'],
+                        $row['end_date'],
+                        $row['class_id']
+                    ),
+                    'briefs' => []
+                ];
+            }
+
+            $briefId = $row['brief_id'];
+
+            if (!isset($result[$sprintId]['briefs'][$briefId])) {
+                $result[$sprintId]['briefs'][$briefId] = [
+                    'brief' => BriefMapper::map_brief_info(
+                        $row['brief_id'],
+                        $row['title'],
+                        $row['description'],
+                        $row['date_remise'],
+                        $row['type'],
+                        $row['sprint_id']
+                    ),
+                    'competences' => []
+                ];
+            }
+
+            $result[$sprintId]['briefs'][$briefId]['competences'][] =
+                ComeptenceMapper::map_competence_info(
+                    $row['competence_id'],
+                    $row['code'],
+                    $row['libelle'],
+                    $row['competence_description'],
+                    $row['competence_level']
+                );
+        }
+
+        return $result;
     }
 }

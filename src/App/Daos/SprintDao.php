@@ -62,4 +62,34 @@ class SprintDao
         $result = $this->data->query($query);
         return $result;
     }
+
+    public function get_all_sprints_with_briefs_and_competences()
+    {
+        $query = 'SELECT 
+                s.id AS sprint_id,
+                s.name ,
+                s.start_date,
+                s.end_date,
+                s.class_id,
+
+                b.id AS brief_id,
+                b.title,
+                b.description,
+                b.date_remise,
+                b.type,
+
+                c.id AS competence_id,
+                c.code,
+                c.libelle,
+                c.description AS competence_description,
+                bc.level AS competence_level
+
+            FROM sprint s
+            JOIN brief b ON b.sprint_id = s.id
+            JOIN brief_competence bc ON bc.brief_id = b.id
+            JOIN competence c ON c.id = bc.competence_id
+        ';
+        $result = $this->data->query($query);
+        return $result;
+    }
 }

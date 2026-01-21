@@ -65,4 +65,7 @@ class SprintServices
     public function get_all_sprints(){
         return $this->sprint_repository->get_all_sprints();
     }
+    public function get_all_sprints_with_briefs_and_competences(){
+        return $this->sprint_repository->get_all_sprints_with_briefs_and_competences();
+    }
 }

@@ -33,6 +33,15 @@ CREATE TABLE sprint (
     CONSTRAINT fk_sprint_class FOREIGN KEY (class_id) REFERENCES class(id) ON DELETE CASCADE
 );
 
+CREATE TABLE brief_teacher(
+    id SERIAL PRIMARY KEY,
+    teacher_id int,
+    brief_id int,
+    CONSTRAINT fk_brief_teacher_teacher_id FOREIGN KEY (teacher_id) REFERENCES users(id) ON DELETE CASCADE
+    CONSTRAINT fk_brief_teacher_brief_id FOREIGN KEY (brief_id) REFERENCES brief(id) ON DELETE CASCADE
+
+);
+
 CREATE TABLE brief (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
@@ -54,6 +63,7 @@ CREATE TABLE brief_competence (
     id SERIAL PRIMARY KEY,
     brief_id INT NOT NULL,
     competence_id INT NOT NULL,
+    level VARCHAR(20) NOT NULL CHECK (level IN ('IMITER', 'S_ADAPTER', 'TRANSPOSER')),
     CONSTRAINT fk_brief_competence_brief_id FOREIGN KEY (brief_id) REFERENCES brief(id) ON DELETE CASCADE,
     CONSTRAINT fk_brief_competence_competence_id FOREIGN KEY (competence_id) REFERENCES competence(id) ON DELETE CASCADE
 );
