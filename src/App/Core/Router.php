@@ -32,6 +32,20 @@ class Router
                 $controller->$controller_method();
                 return;
             }
+            if (str_starts_with($this->routes[$request_method][$uri], 'Teacher')) {
+                [$controller_name, $controller_method] = explode('@', $this->routes[$request_method][$uri]);
+                $controller_class = "App\\Controllers\\Teacher\\$controller_name";
+                $controller = new $controller_class();
+                $controller->$controller_method();
+                return;
+            }
+            if (str_starts_with($this->routes[$request_method][$uri], 'Student')) {
+                [$controller_name, $controller_method] = explode('@', $this->routes[$request_method][$uri]);
+                $controller_class = "App\\Controllers\\Student\\$controller_name";
+                $controller = new $controller_class();
+                $controller->$controller_method();
+                return;
+            }
             [$controller_name, $controller_method] = explode('@', $this->routes[$request_method][$uri]);
             $controller_class = "App\\Controllers\\$controller_name";
             $controller = new $controller_class();

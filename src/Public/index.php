@@ -56,5 +56,12 @@ $router->post('/admin/sprint/create','AdminSprintsController@insert_sprint');
 $router->post('/admin/sprint/delete','AdminSprintsController@delete_sprint');
 $router->post('/admin/sprint/update','AdminSprintsController@update_sprint');
 
+//teacher-brief
+$router->get('/teacher/briefs','TeacherBriefController@index');
+$router->post('/teacher/brief/create','TeacherBriefController@add_brief');
+$router->post('/teacher/brief/delete','TeacherBriefController@delete_brief');
+$router->post('/teacher/brief/update','TeacherBriefController@edit_brief');
+
+
 
 $router->dispatch();
