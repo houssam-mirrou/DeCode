@@ -6,11 +6,13 @@ class Livrable {
     private int $id;
     private string $url;
     private string $date_submitted;
-    public function __construct($id,$url,$date_submitted)
+    private string $comment;
+    public function __construct($id,$url,$comment,$date_submitted)
     {
         $this->id=$id;
         $this->url=$url;
         $this->date_submitted=$date_submitted;
+        $this->comment = $comment;
     }
 
     public function get_id(){
@@ -21,5 +23,8 @@ class Livrable {
     }
     public function get_date_submitted(){
         return $this->date_submitted;
+    }
+    public function get_comment(){
+        return $this->comment;
     }
 }

@@ -2,12 +2,14 @@
 
 namespace App\Repositories;
 
+use App\Core\Functions;
 use App\Daos\BriefDao;
 use App\Daos\CompetenceDao;
 use App\Daos\SprintDao;
 use App\Mappers\BriefMapper;
 use App\Mappers\ComeptenceMapper;
 use App\Mappers\SprintMapper;
+use App\Models\Livrable;
 use WeakMap;
 
 class SprintRepository
@@ -105,6 +107,79 @@ class SprintRepository
                 );
         }
 
+        return $result;
+    }
+
+    public function get_all_sprints_with_briefs_and_competences_and_submission($studentId)
+    {
+        $rows = $this->sprint_dao->get_all_sprints_with_briefs_and_competences_and_submission($studentId);
+        // Functions::dd($rows);
+
+        $result = [];
+
+        foreach ($rows as $row) {
+
+            $sprintId = $row['sprint_id'];
+
+            if (!isset($result[$sprintId])) {
+                $result[$sprintId] = [
+                    'sprint' => SprintMapper::map_sprint_info(
+                        $row['sprint_id'],
+                        $row['name'],
+                        $row['start_date'],
+                        $row['end_date'],
+                        $row['class_id']
+                    ),
+                    'briefs' => []
+                ];
+            }
+
+            $briefId = $row['brief_id'];
+
+            if (!isset($result[$sprintId]['briefs'][$briefId])) {
+
+                $brief = BriefMapper::map_brief_info(
+                    $row['brief_id'],
+                    $row['title'],
+                    $row['description'],
+                    $row['date_remise'],
+                    $row['type'],
+                    $row['sprint_id']
+                );
+
+                if (!empty($row['repo_link'])) {
+                    $string = 'ana hna';
+                    // Functions::dd($string);
+                    $livrable = new Livrable(
+                        $row['livrable_id'] ?? 0,
+                        $row['repo_link'],
+                        $row['livrable_comment'] ?? '',
+                        $row['date_submitted'] ?? date('Y-m-d H:i:s')
+                    );
+
+                    $brief->set_livrable(clone $livrable);
+                }
+
+                if (!empty($row['review_status'])) {
+                    $brief->set_review_status($row['review_status']);
+                }
+
+                $result[$sprintId]['briefs'][$briefId] = [
+                    'brief' => $brief,
+                    'competences' => []
+                ];
+            }
+
+            $result[$sprintId]['briefs'][$briefId]['competences'][] =
+                ComeptenceMapper::map_competence_info(
+                    $row['competence_id'],
+                    $row['code'],
+                    $row['libelle'],
+                    $row['competence_description'],
+                    $row['competence_level']
+                );
+        }
+        
         return $result;
     }
 }

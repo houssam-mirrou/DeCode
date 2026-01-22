@@ -92,4 +92,49 @@ class SprintDao
         $result = $this->data->query($query);
         return $result;
     }
+
+    public function get_all_sprints_with_briefs_and_competences_and_submission($studentId)
+    {
+        $query = "SELECT 
+            s.id AS sprint_id,
+            s.name,
+            s.start_date,
+            s.end_date,
+            s.class_id,
+
+            b.id AS brief_id,
+            b.title,
+            b.description,
+            b.date_remise,
+            b.type,
+
+            c.id AS competence_id,
+            c.code,
+            c.libelle,
+            c.description AS competence_description,
+            bc.level AS competence_level,
+
+            l.id AS livrable_id,
+            l.url AS repo_link,
+            l.comment AS livrable_comment,
+            l.date_submitted,
+
+            e.review AS review_status
+
+        FROM sprint s
+        JOIN brief b ON b.sprint_id = s.id
+        JOIN brief_competence bc ON bc.brief_id = b.id
+        JOIN competence c ON c.id = bc.competence_id
+
+        LEFT JOIN livrable l
+            ON l.brief_id = b.id AND l.student_id = 5
+
+        LEFT JOIN evaluation e
+            ON e.brief_id = b.id AND e.student_id = 5
+
+        ORDER BY s.start_date DESC, b.date_remise ASC
+    ";
+
+        return $this->data->query($query);
+    }
 }

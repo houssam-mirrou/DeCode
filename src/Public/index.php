@@ -19,16 +19,14 @@ $user = UserDao::get_instance();
 
 $router = new Router();
 
-if(isset($_SESSION['current_user'])) {
-    $router->get('/', 'DashboardController@index');
-} else {
-    $router->get('/', 'LogInController@index');
-}
+//home page
+$router->get('/', 'HomeController@index');
 $router->post('/logout','LogOutController@index');
-
 $router->post('/login','LogInController@log_in');
 
 //admin
+$router->get('/admin/dashboard','AdminDashboardController@index');
+
 //admin-competence
 $router->get('/admin/competences','AdminCompetencesController@index');
 $router->post('/admin/competence/create','AdminCompetencesController@add_competence');
@@ -56,12 +54,22 @@ $router->post('/admin/sprint/create','AdminSprintsController@insert_sprint');
 $router->post('/admin/sprint/delete','AdminSprintsController@delete_sprint');
 $router->post('/admin/sprint/update','AdminSprintsController@update_sprint');
 
+//teacher
+$router->get('/teacher/dashboard','TeacherDashboardController@index');
+
 //teacher-brief
 $router->get('/teacher/briefs','TeacherBriefController@index');
 $router->post('/teacher/brief/create','TeacherBriefController@add_brief');
 $router->post('/teacher/brief/delete','TeacherBriefController@delete_brief');
 $router->post('/teacher/brief/update','TeacherBriefController@edit_brief');
 
+//student
+$router->get('/student/dashboard','StudentDashController@index');
+//student-submit brief
+$router->post('/student/brief/submit','StudentDashController@submit');
+
+//student-brief-page
+$router->get('/student/briefs','StudentProjectController@index');
 
 
 $router->dispatch();
