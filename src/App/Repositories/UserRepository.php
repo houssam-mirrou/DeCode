@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Daos\UserDao;
+use App\Dtos\StudentRosterDTO;
 use App\Mappers\UserMapper;
 
 class UserRepository
@@ -64,20 +65,45 @@ class UserRepository
     {
         return $this->userDao->insert_student($first_name, $last_name, $email, $password, $role, $class_id);
     }
-    public function insert_admin($first_name, $last_name, $email, $password, $role){
+    public function insert_admin($first_name, $last_name, $email, $password, $role)
+    {
         return $this->userDao->insert_admin($first_name, $last_name, $email, $password, $role);
     }
-    public function insert_teacher($first_name, $last_name, $email, $password, $role){
+    public function insert_teacher($first_name, $last_name, $email, $password, $role)
+    {
         return $this->userDao->insert_teacher($first_name, $last_name, $email, $password, $role);
     }
-    public function update_user_with_password($id, $first_name, $last_name, $email, $password, $role, $class_id){
+    public function update_user_with_password($id, $first_name, $last_name, $email, $password, $role, $class_id)
+    {
         return $this->userDao->update_user_with_password($id, $first_name, $last_name, $email, $password, $role, $class_id);
     }
-    public function delete_user_by_id($id){
+    public function delete_user_by_id($id)
+    {
         return $this->userDao->delete_user_by_id($id);
     }
 
-    public function get_teacher_class_id($teacher_id){
+    public function get_teacher_class_id($teacher_id)
+    {
         return $this->userDao->get_teacher_class_id($teacher_id);
+    }
+
+    public function get_class_roster($class_id)
+    {
+        $rows = $this->userDao->get_class_roster($class_id);
+
+        $students = [];
+        foreach ($rows as $row) {
+            $students[] = new StudentRosterDTO(
+                $row['id'],
+                $row['first_name'],
+                $row['last_name'],
+                $row['email'],
+                $row['created_date'],
+                $row['validated_count'],
+                10 // Placeholder for "Total Briefs" or calculate dynamically if needed
+            );
+        }
+
+        return $students;
     }
 }

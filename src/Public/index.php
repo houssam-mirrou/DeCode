@@ -76,4 +76,7 @@ $router->get('/teacher/evaluations','TeacherEvaluationController@index');
 $router->get('/teacher/evaluate/{brief_id}/student/{student_id}','TeacherEvaluationBriefController@index');
 $router->post('/teacher/evaluate/submit','TeacherEvaluationBriefController@evaluate');
 
+//teacher-students
+$router->get('/teacher/students','TeacherStudentsController@index');
+
 $router->dispatch();

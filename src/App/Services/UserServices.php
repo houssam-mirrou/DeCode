@@ -146,4 +146,8 @@ class UserServices
     public function get_teacher_class_id($teacher_id) {
         return $this->user_repository->get_teacher_class_id($teacher_id);
     }
+
+    public function get_class_roster($class_id){
+        return $this->user_repository->get_class_roster($class_id);
+    }
 }

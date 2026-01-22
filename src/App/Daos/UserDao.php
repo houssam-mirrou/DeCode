@@ -172,20 +172,45 @@ class UserDao
         return $this->data->query($query, $params);
     }
 
-    public function delete_user_by_id($id){
+    public function delete_user_by_id($id)
+    {
         $query = 'DELETE from users where id=:id';
         $params = [
-            ':id'=>$id
+            ':id' => $id
         ];
-        return $this->data->query($query,$params);
+        return $this->data->query($query, $params);
     }
 
-    public function get_teacher_class_id($teacher_id){
+    public function get_teacher_class_id($teacher_id)
+    {
         $query = 'SELECT class_id from teachers_in_class where teacher_id=:teacher_id';
         $params = [
-            ':teacher_id'=>$teacher_id
+            ':teacher_id' => $teacher_id
         ];
-        $result = $this->data->query($query,$params); 
+        $result = $this->data->query($query, $params);
         return $result[0]['class_id'];
+    }
+
+    public function get_class_roster($class_id)
+    {
+        // We count evaluations where review is 'good' or 'excellent'
+        $query = "SELECT 
+                u.id, u.first_name, u.last_name, u.email, u.created_date,
+                
+                -- Count Validated Projects
+                (SELECT COUNT(*) FROM evaluation e 
+                WHERE e.student_id = u.id 
+                AND (e.review = 'good' OR e.review = 'excellent')
+                ) as validated_count
+
+            FROM users u
+            WHERE u.class_id = :class_id 
+            AND u.role = 'student'
+            ORDER BY u.last_name ASC
+        ";
+
+        // Optional: Get total number of briefs for this class to show progress %
+        // For now, we'll just return the students
+        return $this->data->query($query, [':class_id' => $class_id]);
     }
 }
