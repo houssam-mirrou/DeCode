@@ -142,4 +142,8 @@ class UserServices
     public function delete_user_by_id($id){
         return $this->user_repository->delete_user_by_id($id);
     }
+
+    public function get_teacher_class_id($teacher_id) {
+        return $this->user_repository->get_teacher_class_id($teacher_id);
+    }
 }

@@ -179,4 +179,13 @@ class UserDao
         ];
         return $this->data->query($query,$params);
     }
+
+    public function get_teacher_class_id($teacher_id){
+        $query = 'SELECT class_id from teachers_in_class where teacher_id=:teacher_id';
+        $params = [
+            ':teacher_id'=>$teacher_id
+        ];
+        $result = $this->data->query($query,$params); 
+        return $result[0]['class_id'];
+    }
 }

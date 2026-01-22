@@ -78,4 +78,8 @@ class SprintServices
     public function get_sprint_by_id($id){
         return $this->sprint_repository->get_sprint_by_id($id);
     }
+
+    public function get_all_briefs_submitted_by_students($id){
+        return $this->sprint_repository->get_all_briefs_submitted_by_students($id);
+    }
 }

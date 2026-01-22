@@ -112,6 +112,7 @@ class SprintDao
             c.code,
             c.libelle,
             c.description AS competence_description,
+
             bc.level AS competence_level,
 
             l.id AS livrable_id,
@@ -127,24 +128,58 @@ class SprintDao
         JOIN competence c ON c.id = bc.competence_id
 
         LEFT JOIN livrable l
-            ON l.brief_id = b.id AND l.student_id = 5
+            ON l.brief_id = b.id AND l.student_id = :studentId
 
         LEFT JOIN evaluation e
-            ON e.brief_id = b.id AND e.student_id = 5
+            ON e.brief_id = b.id AND e.student_id = :studentId
 
         ORDER BY s.start_date DESC, b.date_remise ASC
     ";
 
-        return $this->data->query($query);
+        return $this->data->query($query, [':studentId' => $studentId]);
     }
 
-    public function get_sprint_by_id($id){
+    public function get_sprint_by_id($id)
+    {
         $query = 'SELECT * from sprint where id=:id';
         $params = [
-            ':id'=>$id
+            ':id' => $id
         ];
-        $result = $this->data->query($query,$params);
+        $result = $this->data->query($query, $params);
         return $result[0];
     }
 
+    public function get_all_briefs_submitted_by_students($class_id)
+    {
+        $query = "SELECT 
+                -- Sprint
+                s.id AS sprint_id, s.name AS sprint_name, s.start_date, s.end_date, s.class_id,
+                
+                -- Brief
+                b.id AS brief_id, b.title, b.description, b.date_remise, b.type,
+                
+                -- Student (User)
+                u.id AS user_id, u.first_name, u.last_name, u.email, u.role, u.created_date,
+                
+                -- Submission (Livrable)
+                l.id AS livrable_id, l.url AS repo_link, l.comment AS livrable_comment, l.date_submitted,
+                
+                -- Evaluation
+                e.review AS review_status
+
+            FROM sprint s
+            JOIN brief b ON b.sprint_id = s.id
+            -- Get all students in the class associated with the sprint
+            JOIN users u ON u.class_id = s.class_id
+            -- Attach submissions if they exist
+            LEFT JOIN livrable l ON l.student_id = u.id AND l.brief_id = b.id
+            -- Attach evaluations if they exist
+            LEFT JOIN evaluation e ON e.student_id = u.id AND e.brief_id = b.id
+            
+            WHERE s.class_id = :class_id AND u.role = 'student'
+            ORDER BY s.id DESC, b.id ASC, u.last_name ASC
+        ";
+
+        return $this->data->query($query, [':class_id' => $class_id]);
+    }
 }

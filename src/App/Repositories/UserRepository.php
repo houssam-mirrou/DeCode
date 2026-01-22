@@ -76,4 +76,8 @@ class UserRepository
     public function delete_user_by_id($id){
         return $this->userDao->delete_user_by_id($id);
     }
+
+    public function get_teacher_class_id($teacher_id){
+        return $this->userDao->get_teacher_class_id($teacher_id);
+    }
 }

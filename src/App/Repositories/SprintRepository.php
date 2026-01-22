@@ -6,9 +6,15 @@ use App\Core\Functions;
 use App\Daos\BriefDao;
 use App\Daos\CompetenceDao;
 use App\Daos\SprintDao;
+use App\Daos\UserDao;
+use App\Dtos\BriefEvaluationDTO;
+use App\Dtos\SprintEvaluationDTO as DtosSprintEvaluationDTO;
+use App\Dtos\StudentEvaluationDTO;
 use App\Mappers\BriefMapper;
 use App\Mappers\ComeptenceMapper;
+use App\Mappers\LivrableMapper;
 use App\Mappers\SprintMapper;
+use App\Mappers\UserMapper;
 use App\Models\Livrable;
 use WeakMap;
 
@@ -178,13 +184,85 @@ class SprintRepository
                     $row['competence_level']
                 );
         }
-        
+
         return $result;
     }
 
-    public function get_sprint_by_id($id) {
+    public function get_sprint_by_id($id)
+    {
         $result = $this->sprint_dao->get_sprint_by_id($id);
         $sprint = SprintMapper::map_sprint($result);
         return $sprint;
+    }
+
+    public function get_all_briefs_submitted_by_students($class_id)
+    {
+        $rows = $this->sprint_dao->get_all_briefs_submitted_by_students($class_id);
+
+        $result = [];
+
+        foreach ($rows as $row) {
+            $sprintId = $row['sprint_id'];
+            $briefId  = $row['brief_id'];
+            $studentId = $row['user_id'];
+
+            // Sprint
+            if (!isset($result[$sprintId])) {
+                $sprint = SprintMapper::map_sprint_info(
+                    $row['sprint_id'],
+                    $row['sprint_name'],
+                    $row['start_date'],
+                    $row['end_date'],
+                    $row['class_id']
+                );
+                $result[$sprintId] = new DtosSprintEvaluationDTO($sprint);
+            }
+
+            // Brief
+            if (!isset($result[$sprintId]->briefs[$briefId])) {
+                $brief = BriefMapper::map_brief_info(
+                    $row['brief_id'],
+                    $row['title'],
+                    $row['description'],
+                    $row['date_remise'],
+                    $row['type'],
+                    $row['sprint_id']
+                );
+                $result[$sprintId]->briefs[$briefId] = new BriefEvaluationDTO($brief);
+            }
+
+            // Student
+            $student = UserMapper::map_user([
+                'id' => $row['user_id'],
+                'first_name' => $row['first_name'],
+                'last_name' => $row['last_name'],
+                'email' => $row['email'],
+                'role' => $row['role'],
+                'created_date' => $row['created_date'],
+                'class_id' => $class_id
+            ]);
+
+            if (!isset($result[$sprintId]->briefs[$briefId]->students[$studentId])) {
+                $result[$sprintId]->briefs[$briefId]->students[$studentId]
+                    = new StudentEvaluationDTO($student);
+            }
+
+            // Livrable
+            if (!empty($row['repo_link'])) {
+                $result[$sprintId]->briefs[$briefId]->students[$studentId]->livrable
+                    = LivrableMapper::map_livrable_info(
+                        $row['livrable_id'],
+                        $row['repo_link'],
+                        $row['livrable_comment'],
+                        $row['date_submitted']
+                    );
+            }
+
+            // Review
+            $result[$sprintId]->briefs[$briefId]->students[$studentId]->review_status
+                = $row['review_status'];
+        }
+
+        return $result;
     }
 }
