@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Core\Functions;
 use App\Daos\BriefDao;
+use App\Mappers\BriefMapper;
 
 class BriefRepository {
     private $brief_dao;
@@ -52,5 +54,11 @@ class BriefRepository {
 
     public function delete_brief_competences($id){
         return $this->brief_dao->delete_brief_competences($id);
+    }
+
+    public function get_brief_by_id($id){
+        $result = $this->brief_dao->get_brief_by_id($id);
+        $brief = BriefMapper::map_brief($result);
+        return $brief;
     }
 }

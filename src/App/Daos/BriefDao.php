@@ -100,4 +100,13 @@ class BriefDao
         $result = $this->data->query($query, $params);
         return $result;
     }
+
+    public function get_brief_by_id($id){
+        $query = 'SELECT * from brief where id=:id ';
+        $params=[
+            ':id'=>$id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0];
+    }
 }

@@ -137,4 +137,14 @@ class SprintDao
 
         return $this->data->query($query);
     }
+
+    public function get_sprint_by_id($id){
+        $query = 'SELECT * from sprint where id=:id';
+        $params = [
+            ':id'=>$id
+        ];
+        $result = $this->data->query($query,$params);
+        return $result[0];
+    }
+
 }

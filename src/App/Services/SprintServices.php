@@ -74,4 +74,8 @@ class SprintServices
     {
         return $this->sprint_repository->get_all_sprints_with_briefs_and_competences_and_submission($studentId);
     }
+
+    public function get_sprint_by_id($id){
+        return $this->sprint_repository->get_sprint_by_id($id);
+    }
 }

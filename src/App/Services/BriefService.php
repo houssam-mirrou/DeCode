@@ -56,4 +56,8 @@ class BriefService {
     public function delete_brief_competences($id){
         return $this->brief_repository->delete_brief_competences($id);
     }
+
+    public function get_brief_by_id($id){
+        return $this->brief_repository->get_brief_by_id($id);
+    }
 }

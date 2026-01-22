@@ -42,7 +42,7 @@ class Brief
     {
         return $this->type;
     }
-    public function get_class_id()
+    public function get_sprint_id()
     {
         return $this->sprint_id;
     }
