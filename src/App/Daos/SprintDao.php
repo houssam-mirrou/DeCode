@@ -182,4 +182,45 @@ class SprintDao
 
         return $this->data->query($query, [':class_id' => $class_id]);
     }
+
+    public function get_student_evaluation_data($brief_id, $student_id)
+    {
+        // 1. Context Query: Users, Brief, Livrable, Evaluation
+        $queryContext = "SELECT 
+                u.id as student_id, u.first_name, u.last_name, u.email,
+                b.id as brief_id, b.title, b.description,
+                l.url, l.date_submitted, l.comment as student_comment,
+                e.id as evaluation_id, e.comment as teacher_comment, e.review
+            FROM users u
+            JOIN brief b ON b.id = :brief_id
+            -- Left Join Livrable: We want the student even if they didn't submit
+            LEFT JOIN livrable l ON l.student_id = u.id AND l.brief_id = b.id
+            -- Left Join Evaluation: We want data even if not graded yet
+            LEFT JOIN evaluation e ON e.student_id = u.id AND e.brief_id = b.id
+            WHERE u.id = :student_id
+        ";
+
+        // 2. Competence Query: Brief_Competence -> Competence -> Evaluation_Competences
+        $queryComp = "SELECT 
+                c.id as competence_id, c.code, c.libelle,
+                bc.level as target_level,
+                ec.level as acquired_level
+            FROM brief_competence bc
+            JOIN competence c ON bc.competence_id = c.id
+            
+            -- Find existing grade for this specific student
+            LEFT JOIN evaluation e ON e.brief_id = bc.brief_id AND e.student_id = :student_id
+            LEFT JOIN evaluation_competences ec ON ec.evaluation_id = e.id AND ec.competence_id = c.id
+            
+            WHERE bc.brief_id = :brief_id
+        ";
+
+        $context = $this->data->query($queryContext, [':brief_id' => $brief_id, ':student_id' => $student_id]);
+        $competences = $this->data->query($queryComp, [':brief_id' => $brief_id, ':student_id' => $student_id]);
+
+        return [
+            'context' => $context[0] ?? null,
+            'competences' => $competences
+        ];
+    }
 }

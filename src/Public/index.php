@@ -73,7 +73,7 @@ $router->get('/student/briefs','StudentProjectController@index');
 //student-brief-page
 $router->get('/student/brief/{id}','StudentBriefController@index');
 $router->get('/teacher/evaluations','TeacherEvaluationController@index');
-
-
+$router->get('/teacher/evaluate/{brief_id}/student/{student_id}','TeacherEvaluationBriefController@index');
+$router->post('/teacher/evaluate/submit','TeacherEvaluationBriefController@evaluate');
 
 $router->dispatch();

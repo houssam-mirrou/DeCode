@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Controllers\Teacher\TeacherEvaluationBriefController;
 use App\Core\Functions;
 use App\Daos\BriefDao;
 use App\Daos\CompetenceDao;
@@ -10,6 +11,7 @@ use App\Daos\UserDao;
 use App\Dtos\BriefEvaluationDTO;
 use App\Dtos\SprintEvaluationDTO as DtosSprintEvaluationDTO;
 use App\Dtos\StudentEvaluationDTO;
+use App\Dtos\StudentEvaluationTeacherDTO;
 use App\Mappers\BriefMapper;
 use App\Mappers\ComeptenceMapper;
 use App\Mappers\LivrableMapper;
@@ -257,12 +259,18 @@ class SprintRepository
                         $row['date_submitted']
                     );
             }
-
+            //Functions::dd($result);
             // Review
             $result[$sprintId]->briefs[$briefId]->students[$studentId]->review_status
                 = $row['review_status'];
         }
 
         return $result;
+    }
+
+    public function get_student_evaluation_data($brief_id, $student_id){
+        $result = $this->sprint_dao->get_student_evaluation_data($brief_id, $student_id);
+        $dto = StudentEvaluationTeacherDTO::fromDatabase($result['context'],$result['competences']);
+        return $dto;
     }
 }
