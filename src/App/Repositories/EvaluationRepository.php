@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Daos\EvaluationDao;
+use App\Dtos\StudentGradeDTO;
 
 class EvaluationRepository{
     private static $instance;
@@ -30,5 +31,34 @@ class EvaluationRepository{
     public function link_evaluation_competence($evaluation_id, $competence_id,$level)
     {
         return $this->evaluation_dao->link_evaluation_competence($evaluation_id, $competence_id,$level);
+    }
+
+    public function get_student_evaluations($student_id) {
+    $rows = $this->evaluation_dao->get_student_evaluations($student_id);
+
+    // 2. Group by Brief ID
+    $evaluations = [];
+    
+    foreach ($rows as $row) {
+        $briefId = $row['brief_id'];
+
+        if (!isset($evaluations[$briefId])) {
+            $evaluations[$briefId] = new StudentGradeDTO(
+                $row['title'],
+                $row['graded_date'],
+                $row['status'],
+                $row['teacher_comment']
+            );
+        }
+
+        // Add Skill to the existing Brief object
+        if ($row['skill_name']) {
+            $evaluations[$briefId]->skills[] = [
+                'name' => $row['skill_name'],
+                'level' => $row['skill_level']
+            ];
+        }
+    }
+        return $evaluations;
     }
 }

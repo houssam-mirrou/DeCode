@@ -31,4 +31,8 @@ class EvaluationService
     {
         return $this->evaluation_repository->link_evaluation_competence($evaluation_id, $competence_id,$level);
     }
+
+    public function get_student_evaluations($student_id) {
+        return $this->evaluation_repository->get_student_evaluations($student_id);
+    }
 }

@@ -67,7 +67,8 @@ $router->post('/teacher/brief/update','TeacherBriefController@edit_brief');
 $router->get('/student/dashboard','StudentDashController@index');
 //student-submit brief
 $router->post('/student/brief/submit','StudentDashController@submit');
-
+//student-evaluations
+$router->get('/student/evaluations','StudentEvaluationsController@index');
 //student-projects
 $router->get('/student/briefs','StudentProjectController@index');
 //student-brief-page

@@ -20,6 +20,10 @@
                     class="flex items-center px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors">
                     <i data-lucide="folder-git-2" class="w-5 h-5 mr-3 text-slate-400"></i> My Projects
                 </a>
+                <a href="/student/evaluations"
+                    class="flex items-center px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 mr-3 text-slate-400"></i> My Evaluations
+                </a>
             </nav>
 
             <div class="p-4 border-t border-slate-100">
@@ -126,7 +130,7 @@
 
                                             // 2. Is it submitted? (Check for 'repo_link' from livrable table)
                                             $is_submitted = $brief->get_repo_link();
-                                            
+
                                             // Determine Visual Status
                                             $status = 'todo';
                                             if ($is_validated) {

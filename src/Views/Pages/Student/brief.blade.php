@@ -10,14 +10,21 @@
                 <h1 class="text-xl font-bold text-indigo-600 tracking-wider">DECODE <span
                         class="text-xs text-slate-400 font-normal ml-1">STUDENT</span></h1>
             </div>
+
             <nav class="flex-1 px-3 py-6 space-y-1">
                 <a href="/student/dashboard"
                     class="flex items-center px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors">
                     <i data-lucide="layout-dashboard" class="w-5 h-5 mr-3 text-slate-400"></i> Dashboard
                 </a>
+
                 <a href="/student/briefs"
-                    class="flex items-center px-3 py-2.5 bg-indigo-50 text-indigo-700 font-medium rounded-lg transition-colors">
-                    <i data-lucide="folder-git-2" class="w-5 h-5 mr-3 text-indigo-600"></i> My Projects
+                    class="flex items-center px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors">
+                    <i data-lucide="folder-git-2" class="w-5 h-5 mr-3 text-slate-400"></i> My Projects
+                </a>
+
+                <a href="/student/evaluations"
+                    class="flex items-center px-3 py-2.5 text-slate-600 hover:bg-slate-50 hover:text-slate-900 rounded-lg transition-colors">
+                    <i data-lucide="clipboard-check" class="w-5 h-5 mr-3 text-slate-400"></i> My Evaluations
                 </a>
             </nav>
         </aside>
@@ -60,14 +67,13 @@
                             </div>
                             <div class="divide-y divide-slate-100">
                                 @forelse($brief['competences'] as $comp)
-
                                     <div class="p-4 flex items-start gap-4 hover:bg-slate-50 transition-colors">
                                         <div
                                             class="w-10 h-10 rounded-lg bg-indigo-50 border border-indigo-100 flex-shrink-0 flex items-center justify-center text-indigo-700 font-bold text-sm">
                                             {{ $comp->get_code() }}
                                         </div>
                                         <div>
-                                            <h4 class="text-sm font-bold text-slate-800">{{ $comp->get_libelle()  }}</h4>
+                                            <h4 class="text-sm font-bold text-slate-800">{{ $comp->get_libelle() }}</h4>
                                             <p class="text-xs text-slate-500 mt-0.5">
                                                 {{ $comp->get_libelle() ?? 'No description' }}</p>
                                             <div
@@ -129,7 +135,8 @@
                                             class="flex items-center gap-2 p-3 rounded-lg bg-slate-50 border border-slate-200 text-indigo-600 hover:border-indigo-300 transition-all group">
                                             <i data-lucide="github"
                                                 class="w-4 h-4 text-slate-400 group-hover:text-indigo-600"></i>
-                                            <span class="text-sm font-medium truncate">{{ $brief['brief']->get_repo_link() }}</span>
+                                            <span
+                                                class="text-sm font-medium truncate">{{ $brief['brief']->get_repo_link() }}</span>
                                             <i data-lucide="external-link" class="w-3 h-3 ml-auto opacity-50"></i>
                                         </a>
                                     </div>
