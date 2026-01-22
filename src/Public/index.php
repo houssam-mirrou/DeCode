@@ -68,8 +68,11 @@ $router->get('/student/dashboard','StudentDashController@index');
 //student-submit brief
 $router->post('/student/brief/submit','StudentDashController@submit');
 
-//student-brief-page
+//student-projects
 $router->get('/student/briefs','StudentProjectController@index');
+//student-brief-page
+$router->get('/student/brief/{id}','StudentBriefController@index');
+
 
 
 $router->dispatch();

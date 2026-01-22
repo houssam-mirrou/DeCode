@@ -113,7 +113,6 @@ class SprintRepository
     public function get_all_sprints_with_briefs_and_competences_and_submission($studentId)
     {
         $rows = $this->sprint_dao->get_all_sprints_with_briefs_and_competences_and_submission($studentId);
-        // Functions::dd($rows);
 
         $result = [];
 
@@ -181,5 +180,11 @@ class SprintRepository
         }
         
         return $result;
+    }
+
+    public function get_sprint_by_id($id) {
+        $result = $this->sprint_dao->get_sprint_by_id($id);
+        $sprint = SprintMapper::map_sprint($result);
+        return $sprint;
     }
 }
