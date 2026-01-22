@@ -72,6 +72,7 @@ $router->post('/student/brief/submit','StudentDashController@submit');
 $router->get('/student/briefs','StudentProjectController@index');
 //student-brief-page
 $router->get('/student/brief/{id}','StudentBriefController@index');
+$router->get('/teacher/evaluations','TeacherEvaluationController@index');
 
 
 
