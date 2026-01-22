@@ -106,7 +106,7 @@
                                     </div>
                                     <h4 class="text-xl font-bold text-emerald-700">Evaluated</h4>
                                     <p class="text-sm text-emerald-600/80 mt-1 font-medium capitalize">
-                                        {{ $brief['brief']->review_status() }}</p>
+                                        {{ $brief['brief']->get_review_status() }}</p>
 
                                     <div class="mt-6 pt-6 border-t border-slate-100">
                                         <p class="text-xs text-slate-400 mb-2">Teacher's Feedback</p>

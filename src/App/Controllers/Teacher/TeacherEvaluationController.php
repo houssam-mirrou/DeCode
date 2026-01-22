@@ -14,7 +14,7 @@ class TeacherEvaluationController extends Controller {
         $class_id = $user_service->get_teacher_class_id($_SESSION['current_user']->get_id());
 
         $sprints = $sprint_service->get_all_briefs_submitted_by_students($class_id);
-        // Functions::dd($sprints);
+        //Functions::dd($sprints);
 
         $this->view('Pages.Teacher.evaluation',[
             'sprints'=>$sprints
