@@ -49,7 +49,7 @@ class EvaluationDao
         return $this->data->query($query, $params);
     }
 
-    public function link_evaluation_competence($evaluation_id, $competence_id,$level)
+    public function link_evaluation_competence($evaluation_id, $competence_id, $level)
     {
         $query = "INSERT INTO evaluation_competences (evaluation_id, competence_id,level) 
                   VALUES (:evaluation_id, :competence_id,:level)";
@@ -59,5 +59,26 @@ class EvaluationDao
             ':level' => $level
         ];
         return $this->data->query($query, $params);
+    }
+
+    public function get_student_evaluations($student_id)
+    {
+        $query = "SELECT 
+                b.id as brief_id, b.title,
+                e.created_at as graded_date,
+                e.review as status,
+                e.comment as teacher_comment,
+                c.libelle as skill_name,
+                ec.level as skill_level
+            FROM evaluation e
+            JOIN brief b ON e.brief_id = b.id
+            -- Get the specific skill grades
+            LEFT JOIN evaluation_competences ec ON ec.evaluation_id = e.id
+            LEFT JOIN competence c ON ec.competence_id = c.id
+            WHERE e.student_id = :student_id
+            ORDER BY e.created_at DESC
+        ";
+
+        return $this->data->query($query, [':student_id' => $student_id]);
     }
 }
