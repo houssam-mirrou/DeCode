@@ -4,74 +4,7 @@
 
 @section('content')
     <div class="flex h-screen bg-slate-50 overflow-hidden">
-
-        <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col hidden md:flex border-r border-slate-800">
-            <div class="h-16 flex items-center px-6 border-b border-slate-800">
-                <h1 class="text-xl font-bold text-indigo-500 tracking-wider">DECODE <span
-                        class="text-xs text-slate-500 font-normal">ADMIN</span></h1>
-            </div>
-
-            <nav class="flex-1 px-3 py-6 space-y-1">
-
-                <a href="/"
-                    class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
-                    <i data-lucide="layout-dashboard"
-                        class="w-5 h-5 mr-3  text-slate-400 group-hover:text-white transition-colors"></i>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-
-                <div class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    Pedagogical Structure
-                </div>
-
-                <a href="/admin/classes"
-                    class="flex items-center px-3 py-2.5 bg-indigo-600 text-white rounded-lg transition-colors shadow-lg shadow-indigo-500/20">
-                    <i data-lucide="school" class="w-5 h-5 mr-3"></i>
-                    Classes
-                </a>
-
-                <a href="/admin/competences"
-                    class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
-                    <i data-lucide="award" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors"></i>
-                    Competencies
-                </a>
-
-                <a href="/admin/sprints"
-                    class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
-                    <i data-lucide="zap" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors"></i>
-                    Sprints & Briefs
-                </a>
-
-                <div class="pt-4 pb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-                    User Management
-                </div>
-
-                <a href="/admin/users"
-                    class="flex items-center px-3 py-2.5 hover:bg-slate-800 hover:text-white rounded-lg transition-colors group">
-                    <i data-lucide="users" class="w-5 h-5 mr-3 text-slate-400 group-hover:text-white transition-colors"></i>
-                    Users & Roles
-                </a>
-            </nav>
-
-            <div class="p-4 border-t border-slate-800">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-9 h-9 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-sm shadow-md">
-                        AD
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-sm font-medium text-white truncate">Super Admin</p>
-                        <p class="text-xs text-slate-500 truncate">System Manager</p>
-                    </div>
-                    <form action="/logout" method="POST">
-                        <button type="submit"
-                            class="text-slate-400 hover:text-white p-1 rounded-md hover:bg-slate-800 transition-colors">
-                            <i data-lucide="log-out" class="w-4 h-4"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </aside>
+        @include('Partials.admin_sidebar')
 
         <div class="flex-1 flex flex-col h-screen overflow-hidden">
 

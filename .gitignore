@@ -1,3 +1,4 @@
-/src/cache
+/src/cache/*
+!/src/cache/.gitignore
 
 /src/vendor
